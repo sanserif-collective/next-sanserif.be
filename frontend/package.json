@@ -1,0 +1,41 @@
+{
+  "name": "frontend",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "blitz dev",
+    "build": "blitz build",
+    "start": "blitz start",
+    "lint": "eslint --ignore-path .gitignore --ext .js,.ts,.tsx .",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "prepare": "husky install"
+  },
+  "prettier": {
+    "semi": false,
+    "printWidth": 100
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx}": [
+      "eslint --fix"
+    ]
+  },
+  "dependencies": {
+    "autoprefixer": "10.x",
+    "blitz": "0.44.3",
+    "postcss": "8.x",
+    "react": "18.0.0-beta-149b420f6-20211119",
+    "react-dom": "18.0.0-alpha-5ca4b0433-20211020",
+    "tailwindcss": "3.x"
+  },
+  "devDependencies": {
+    "@types/react": "17.0.37",
+    "clsx": "1.1.1",
+    "eslint": "7.32.0",
+    "husky": "7.0.4",
+    "lint-staged": "11.3.0-beta.2",
+    "prettier": "2.5.1",
+    "pretty-quick": "3.1.2",
+    "typescript": "~4.5"
+  },
+  "private": true
+}
