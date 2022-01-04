@@ -1,9 +1,5 @@
-// tailwind.config.js
-
-const plugin = require('tailwindcss/plugin')
-
 module.exports = {
-  content: ['{pages,app}/**/*.{js,ts,jsx,tsx}'],
+  content: ['{components,features,pages}/**/*.{js,ts,jsx,tsx}'],
   corePlugins: {
     container: false,
   },
@@ -45,21 +41,5 @@ module.exports = {
         lineHeight: '1'
       }]
     }
-  },
-  plugins: [
-    plugin(({ addUtilities, theme }) => {
-      Object.entries(theme('fontWeight')).forEach(([key, value]) => {
-        addUtilities({
-          [`font-${key}`]: {
-            'font-variation-settings': `'wght' ${value}`
-          }
-        })
-      })
-    })
-  ],
+  }
 }
-
-// Light
-// Medium
-// Regular
-// Semibold
