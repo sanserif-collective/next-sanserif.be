@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_global_navigations",
+  "info": {
+    "displayName": "Navigation",
+    "icon": "angle-double-right",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "links": {
+      "displayName": "Navigation Link",
+      "type": "component",
+      "repeatable": true,
+      "component": "shared.navigation-link",
+      "required": true
+    }
+  }
+}

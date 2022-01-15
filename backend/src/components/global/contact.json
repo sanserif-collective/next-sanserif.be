@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_global_contacts",
+  "info": {
+    "displayName": "Contact",
+    "icon": "city",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "phone": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "required": true
+    },
+    "place": {
+      "type": "string",
+      "required": true
+    }
+  }
+}
