@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_service_subservices",
+  "info": {
+    "displayName": "Subservices",
+    "icon": "ad"
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    }
+  }
+}
