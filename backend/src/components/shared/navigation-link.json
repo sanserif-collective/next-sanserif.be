@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_shared_navigation_links",
+  "info": {
+    "displayName": "Navigation Link",
+    "icon": "record-vinyl"
+  },
+  "options": {},
+  "attributes": {
+    "label": {
+      "type": "string",
+      "required": true
+    },
+    "page": {
+      "type": "enumeration",
+      "enum": [
+        "home",
+        "about",
+        "contact"
+      ],
+      "required": true
+    }
+  }
+}
