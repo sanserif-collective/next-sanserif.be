@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_page_footer_links",
+  "info": {
+    "displayName": "Next Link",
+    "icon": "angle-double-up"
+  },
+  "options": {},
+  "attributes": {
+    "link": {
+      "type": "component",
+      "repeatable": false,
+      "component": "shared.navigation-link",
+      "required": true
+    },
+    "subtitle": {
+      "type": "string",
+      "required": true
+    }
+  }
+}
