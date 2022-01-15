@@ -1,0 +1,34 @@
+{
+  "collectionName": "components_project_builder_triptyches",
+  "info": {
+    "displayName": "Builder - Triptych",
+    "icon": "allergies"
+  },
+  "options": {},
+  "attributes": {
+    "first": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false,
+      "required": true
+    },
+    "second": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false,
+      "required": true
+    },
+    "third": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false,
+      "required": true
+    }
+  }
+}

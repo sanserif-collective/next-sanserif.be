@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_project_builder_bottoms",
+  "info": {
+    "displayName": "Builder - Bottom",
+    "icon": "adjust"
+  },
+  "options": {},
+  "attributes": {
+    "image": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false,
+      "required": true
+    }
+  }
+}

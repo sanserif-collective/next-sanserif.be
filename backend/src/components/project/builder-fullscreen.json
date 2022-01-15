@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_project_builder_fullscreen",
+  "info": {
+    "displayName": "Builder - Fullscreen",
+    "icon": "air-freshener"
+  },
+  "options": {},
+  "attributes": {
+    "image": {
+      "allowedTypes": [
+        "images"
+      ],
+      "type": "media",
+      "multiple": false,
+      "required": true
+    }
+  }
+}
