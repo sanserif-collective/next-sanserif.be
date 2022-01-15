@@ -1,0 +1,25 @@
+{
+  "kind": "singleType",
+  "collectionName": "dictionaries",
+  "info": {
+    "singularName": "dictionary",
+    "pluralName": "dictionaries",
+    "displayName": "Dictionary"
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "next": {
+      "type": "string",
+      "required": true,
+      "default": "Next"
+    },
+    "rights": {
+      "type": "string",
+      "default": "All rights reserved",
+      "required": true
+    }
+  }
+}
