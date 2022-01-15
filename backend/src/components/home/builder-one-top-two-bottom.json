@@ -1,0 +1,25 @@
+{
+  "collectionName": "components_home_builder_one_top_two_bottoms",
+  "info": {
+    "displayName": "Builder - 1 Top / 2 Bottom",
+    "icon": "angle-double-left"
+  },
+  "options": {},
+  "attributes": {
+    "first": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::project.project"
+    },
+    "second": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::project.project"
+    },
+    "third": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::project.project"
+    }
+  }
+}

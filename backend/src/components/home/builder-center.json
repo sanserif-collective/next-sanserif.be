@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_home_builder_centers",
+  "info": {
+    "displayName": "Builder - Center",
+    "icon": "align-left"
+  },
+  "options": {},
+  "attributes": {
+    "project": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::project.project"
+    }
+  }
+}
