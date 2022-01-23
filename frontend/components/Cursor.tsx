@@ -1,3 +1,4 @@
+import { useQuickSetter } from 'features/gsap'
 import { gsap } from 'gsap'
 import useGesture from 'hooks/useGesture'
 import { useEffect, useRef } from 'react'
@@ -11,32 +12,29 @@ type Props = {
 const Cursor = ({ className, speed = 1 }: Props) => {
   const cursor = useRef<HTMLDivElement>(null)
 
+  const [xSet] = useQuickSetter({ targets: cursor, property: 'x', unit: 'px' })
+  const [ySet] = useQuickSetter({ targets: cursor, property: 'y', unit: 'px' })
+
   const cursorPosition = { x: 0, y: 0 }
   const mousePosition = { x: 0, y: 0 }
 
-  const updatePosition = ({ x, y }: PointerEvent) => {
-    mousePosition.x = x
-    mousePosition.y = y
-  }
+  const updatePosition = ({ x, y }: PointerEvent) => (mousePosition.x = x, mousePosition.y = y)
+  useGesture({ onPointerMove: updatePosition })
 
   useEffect(() => {
     if (!cursor.current) return
 
-    const xSet = gsap.quickSetter(cursor.current, 'x', 'px')
-    const ySet = gsap.quickSetter(cursor.current, 'y', 'px')
     const halfWidth = cursor.current.offsetWidth / 2
     const halfHeight = cursor.current.offsetHeight / 2
 
     const moveCursor = () => {
-      xSet(cursorPosition.x += lerp(mousePosition.x - halfWidth, cursorPosition.x, speed))
-      ySet(cursorPosition.y += lerp(mousePosition.y - halfHeight, cursorPosition.y, speed))
+      xSet.current?.(cursorPosition.x += lerp(mousePosition.x - halfWidth, cursorPosition.x, speed))
+      ySet.current?.(cursorPosition.y += lerp(mousePosition.y - halfHeight, cursorPosition.y, speed))
     }
 
     gsap.ticker.add(moveCursor)
     return () => gsap.ticker.remove(moveCursor)
   }, [])
-
-  useGesture({ onPointerMove: updatePosition })
 
   return (
     <div
