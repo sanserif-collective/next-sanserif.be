@@ -1,43 +1,49 @@
-import useGesture from 'app/hooks/useGesture'
-import gsap from 'gsap'
+import { gsap } from 'gsap'
+import useGesture from 'hooks/useGesture'
 import { useEffect, useRef } from 'react'
+import lerp from 'utilities/lerp'
 
 type Props = {
   className: string
-  ease?: boolean
+  speed?: number
 }
 
-type CursorPosition = { x: number, y: number }
-
-const Cursor = ({ className, ease = false }: Props) => {
+const Cursor = ({ className, speed = 1 }: Props) => {
   const cursor = useRef<HTMLDivElement>(null)
-  const position: CursorPosition = { x: 0, y: 0 }
 
-  const updatePosition = ({ x, y }: CursorPosition) => {
-    if (!cursor.current) return
-    position.x = x
-    position.y = y
+  const cursorPosition = { x: 0, y: 0 }
+  const mousePosition = { x: 0, y: 0 }
+
+  const updatePosition = ({ x, y }: PointerEvent) => {
+    mousePosition.x = x
+    mousePosition.y = y
   }
 
-  const moveCursor = () => {
+  useEffect(() => {
     if (!cursor.current) return
-    gsap[ease ? 'to' : 'set'](cursor.current, {
-      x: position.x - (cursor.current.offsetWidth / 2),
-      y: position.y - (cursor.current.offsetHeight / 2)
-    })
-  }
+
+    const xSet = gsap.quickSetter(cursor.current, 'x', 'px')
+    const ySet = gsap.quickSetter(cursor.current, 'y', 'px')
+    const halfWidth = cursor.current.offsetWidth / 2
+    const halfHeight = cursor.current.offsetHeight / 2
+
+    const moveCursor = () => {
+      xSet(cursorPosition.x += lerp(mousePosition.x - halfWidth, cursorPosition.x, speed))
+      ySet(cursorPosition.y += lerp(mousePosition.y - halfHeight, cursorPosition.y, speed))
+    }
+
+    gsap.ticker.add(moveCursor)
+    return () => gsap.ticker.remove(moveCursor)
+  }, [])
 
   useGesture({ onPointerMove: updatePosition })
-  useEffect(() => gsap.ticker.add(moveCursor), [])
 
   return (
-    <>
-      <div
-        ref={cursor}
-        className={`absolute z-20 pointer-events-none ${className}`}
-      >
-      </div>
-    </>
+    <div
+      ref={cursor}
+      className={`fixed z-20 pointer-events-none ${className}`}
+    >
+    </div>
   )
 }
 
