@@ -1,47 +1,40 @@
-import gsap from 'gsap'
-import { useRouter } from 'next/router'
-import { useEffect, useRef, useState } from 'react'
-import type { ScrollCallback } from '.'
+import { gsap } from 'gsap'
+import { ReactNode, useEffect, useRef, useState } from 'react'
+import { ScrollEvent } from '.'
 import ASScroll from './ASScroll'
 import ASScrollContext from './ASScrollContext'
 
 type Props = {
-  children: React.ReactNode
-  inBetween: React.ReactNode
+  children: ReactNode
+  inBetween: ReactNode
 }
 
 export const ASScrollContainer = ({ children, inBetween }: Props) => {
-  const router = useRouter()
-
-  const scrollContainer = useRef<HTMLDivElement>(null)
-  const scrollElement = useRef<HTMLDivElement>(null)
+  const container = useRef<HTMLDivElement>(null)
+  const scroller = useRef<HTMLDivElement>(null)
 
   const [scroll, setScroll] = useState({} as ASScroll)
   const [mounted, setMounted] = useState(false)
 
-  const scrollCallbacks = new Set<ScrollCallback>()
+  const scrollEvents = new Set<ScrollEvent>()
+  const onScroll = (currentPos: number) => scrollEvents.forEach(
+    event => event(currentPos, scroll)
+  )
 
   const updateScroll = () => {
+    if (!scroller.current || !scroll.containerElement) return
     scroll.disable()
     scroll.enable({
-      newScrollElements: scrollElement.current!,
+      newScrollElements: scroller.current,
       horizontalScroll: true,
       reset: true
     })
   }
 
-  const onScroll = (progress: number) => {
-    scrollCallbacks.forEach(
-      callback => callback(progress, scroll)
-    )
-  }
-
-  const onPageChange = () => updateScroll()
-
   useEffect(() => {
     setScroll(
       new ASScroll({
-        containerElement: scrollContainer.current!,
+        containerElement: container.current || document.body,
         disableRaf: true,
         ease: 0.05,
         customScrollbar: false,
@@ -49,37 +42,25 @@ export const ASScrollContainer = ({ children, inBetween }: Props) => {
       })
     )
     setMounted(true)
-
     return () => setScroll({} as ASScroll)
-  }, [scrollContainer])
+  }, [])
 
   useEffect(() => {
     if (!mounted) return
     updateScroll()
-
     gsap.ticker.add(scroll.update)
-
     scroll.on('scroll', onScroll)
-    router.events.on(
-      'routeChangeComplete',
-      onPageChange
-    )
-
     return () => {
       gsap.ticker.remove(scroll.update)
-      scrollCallbacks.clear()
-      router.events.off(
-        'routeChangeComplete',
-        onPageChange
-      )
+      scroll.off('scroll', onScroll)
     }
-  }, [scroll])
+  }, [mounted])
 
   return (
-    <ASScrollContext.Provider value={{ scroll, scrollCallbacks, updateScroll }}>
-      <div ref={scrollContainer}>
+    <ASScrollContext.Provider value={{ scroll, scrollEvents, updateScroll }}>
+      <div ref={container}>
         {inBetween}
-        <div className="flex" ref={scrollElement}>
+        <div className="flex" ref={scroller}>
           {children}
         </div>
       </div>

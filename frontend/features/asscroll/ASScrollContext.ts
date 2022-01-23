@@ -1,10 +1,10 @@
 import { createContext } from 'react'
-import { ScrollCallback } from '.'
-import ASScroll from './ASScroll'
+import { ScrollEvent } from '.'
+import type ASScroll from './ASScroll'
 
 type ASScrollContext = {
   scroll: ASScroll
-  scrollCallbacks: Set<ScrollCallback>
+  scrollEvents: Set<ScrollEvent>
   updateScroll: () => void
 }
 
