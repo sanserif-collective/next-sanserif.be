@@ -1,7 +1,6 @@
 import { useASScroll } from 'features/asscroll'
-import { useQuickSetter } from 'features/gsap'
 import { gsap } from 'gsap'
-import { ReactNode, useEffect } from 'react'
+import { ReactNode, useEffect, useRef } from 'react'
 
 type Props = {
   children: ReactNode
@@ -12,17 +11,20 @@ const clamper = gsap.utils.mapRange(-5, 5, -2, 2)
 
 const Skew = ({ children, className }: Props) => {
   const { scroll } = useASScroll()
-  const [skewSet, box] = useQuickSetter<HTMLDivElement>({ property: 'skewX', unit: 'deg' })
+  const box = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    const skewBox = () => skewSet.current?.(clamper(scroll.speed * 3))
-
+    const skewSet = gsap.quickSetter(box.current, 'skewX', 'deg')
+    const skewBox = () => skewSet(clamper(scroll.speed * 3))
     gsap.ticker.add(skewBox)
     return () => gsap.ticker.remove(skewBox)
   }, [scroll])
 
   return (
-    <div ref={box} className={className}>
+    <div
+      ref={box}
+      className={className}
+    >
       {children}
     </div>
   )
