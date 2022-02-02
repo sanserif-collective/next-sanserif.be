@@ -36,8 +36,7 @@ const Cursor = ({ className, speed = 1 }: Props) => {
     <div
       ref={cursor}
       className={`fixed z-20 pointer-events-none ${className}`}
-    >
-    </div>
+    />
   )
 }
 
