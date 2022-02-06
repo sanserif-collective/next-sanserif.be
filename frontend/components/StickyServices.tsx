@@ -1,6 +1,7 @@
+import { useASScroll } from 'features/asscroll'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/dist/ScrollTrigger'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { Service } from 'types/shared'
 import Skew from './Skew'
 
@@ -12,84 +13,64 @@ const StickyServices = ({ services }: Props) => {
   const top = useRef<HTMLUListElement>(null)
   const bottom = useRef<HTMLUListElement>(null)
 
-  const [topTriggers, setTopTriggers] = useState<ScrollTrigger[]>()
-  const [bottomTimelines, setBottomTimelines] = useState<gsap.core.Timeline[]>()
-  const [bottomTrigger, setBottomTrigger] = useState<ScrollTrigger>()
+  const { scroll } = useASScroll()
 
   useEffect(() => {
-    if (!bottom.current) return
-
-    setBottomTimelines(
-      Array.from(
-        bottom.current.childNodes
-      ).map(node => {
-        const subservices = node.lastChild?.childNodes!
-        return gsap.timeline({ paused: true })
-          .from(subservices, {
-            opacity: 0,
-            xPercent: 20,
-            duration: 0.75
-          })
-          .to(subservices, {
-            opacity: 1,
-            xPercent: 0,
-            stagger: 0.05,
-            duration: 0.5,
-            ease: 'power3.out'
-          })
-      })
-    )
-  }, [bottom.current])
-
-  useEffect(() => {
-    if (!top.current || !bottom.current || !bottomTimelines) return
+    if (!top.current || !bottom.current || !scroll.current) return
 
     const { length } = bottom.current.childNodes
 
-    setTopTriggers(
-      Array.from(
-        top.current.childNodes
-      ).map((service, index) => {
-        return ScrollTrigger.create({
-          trigger: service as HTMLLIElement,
-          end: '50%',
-          onEnter() {
-            const previous = (index + (length - 1)) % length
-            bottomTimelines[previous].reverse()
-            bottomTimelines[index].play()
-          },
-          onEnterBack() {
-            const previous = (index + (length + 1)) % length
-            bottomTimelines[previous].reverse()
-            bottomTimelines[index].play()
-          }
+    const bottomTimelines = Array.from(
+      bottom.current.childNodes
+    ).map(node => {
+      const subservices = node.lastChild?.childNodes!
+      return gsap.timeline({ paused: true })
+        .from(subservices, {
+          opacity: 0,
+          xPercent: 20,
+          duration: 0.5,
+          stagger: 0.05,
+          ease: 'power3.out'
         })
-      })
-    )
-
-    setBottomTrigger(
-      ScrollTrigger.create({
-        trigger: bottom.current,
-        pin: true,
-        start: `-${window.innerHeight / 16}px`,
-        end: `${top.current.offsetWidth - (window.innerHeight / 4)}px`,
-        onEnter: () => bottomTimelines[0].play(),
-        onEnterBack: () => bottomTimelines[length - 1].play(),
-        onLeave: () => bottomTimelines[length - 1].reverse(),
-        onLeaveBack: () => bottomTimelines[0].reverse()
-      })
-    )
-  }, [bottomTimelines])
-
-  useEffect(() => () => {
-    if (!topTriggers || !bottomTrigger || !bottomTimelines) return
-
-    topTriggers.forEach((trigger, index) => {
-      trigger.kill()
-      bottomTimelines[index].kill()
     })
-    bottomTrigger.kill()
-  })
+
+    const playCurrentSubservices = async (index: number) => {
+      await Promise.all(bottomTimelines.map(
+        timeline => timeline.reverse().then()
+      ))
+      bottomTimelines[index].play()
+    }
+
+    const topTriggers = Array.from(
+      top.current.childNodes
+    ).map((service, index) => {
+      return ScrollTrigger.create({
+        trigger: service as HTMLLIElement,
+        start: '50% 50%',
+        onEnter: () => playCurrentSubservices(index),
+        onEnterBack: () => playCurrentSubservices(index)
+      })
+    })
+
+    const bottomTrigger = ScrollTrigger.create({
+      trigger: bottom.current,
+      pin: true,
+      start: `-${window.innerHeight / 16}px`,
+      end: `${top.current.offsetWidth - (window.innerHeight / 4)}px`,
+      onEnter: () => bottomTimelines[0].play(),
+      onEnterBack: () => bottomTimelines[length - 1].play(),
+      onLeave: () => bottomTimelines[length - 1].reverse(),
+      onLeaveBack: () => bottomTimelines[0].reverse()
+    })
+
+    return () => {
+      topTriggers.forEach((trigger, index) => {
+        trigger.kill()
+        bottomTimelines[index].kill()
+      })
+      bottomTrigger.kill()
+    }
+  }, [scroll.current, top.current, bottom.current])
 
   return (
     <div className="flex flex-col items-start justify-center h-full ml-44">
