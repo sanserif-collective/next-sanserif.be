@@ -1,4 +1,5 @@
 import clsx from 'clsx'
+import { useCursor } from 'features/cursor'
 import { gsap } from 'gsap'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -16,6 +17,7 @@ type Props = Contact & {
 
 const Header = ({ open, links, rights, place, phone, email, children, setOpen }: Props) => {
   const router = useRouter()
+  const cursor = useCursor()
 
   const [mounted, setMounted] = useState(false)
 
@@ -28,21 +30,28 @@ const Header = ({ open, links, rights, place, phone, email, children, setOpen }:
 
   const accentSet = gsap.quickSetter(document.body, '--accent-color')
 
-  const setWhite = () => !reveal.current?.reversed() && accentSet('#fff')
-  const setBlack = () => reveal.current?.reversed() && accentSet('#000')
-
-  const showMenu = () => {
-    reveal.current?.play().add(setWhite, 1)
+  const onShow = () => {
+    if (reveal.current?.reversed()) return
+    accentSet('#fff')
     marquees.current.forEach(
       marquee => marquee.play()
     )
   }
 
-  const hideMenu = () => { reveal.current?.reverse().add(setBlack, 1) }
+  const onHide = () => {
+    if (!reveal.current?.reversed()) return
+    accentSet('#000')
+    marquees.current.forEach(
+      marquee => marquee.pause()
+    )
+  }
+
+  const show = () => { reveal.current?.play().add(onShow, 1) }
+  const hide = () => { reveal.current?.reverse().add(onHide, 1) }
 
   const onPageChange = () => {
     setOpen(false)
-    hideMenu()
+    hide()
   }
 
   useEffect(() => {
@@ -86,7 +95,7 @@ const Header = ({ open, links, rights, place, phone, email, children, setOpen }:
   }, [])
 
   useEffect(() => setMounted(true), [])
-  useEffect(() => open ? showMenu() : hideMenu(), [open])
+  useEffect(() => open ? show() : hide(), [open])
 
   return (
     <>
@@ -111,8 +120,14 @@ const Header = ({ open, links, rights, place, phone, email, children, setOpen }:
                   <a
                     className="flex justify-center transition-opacity opacity-50 hover:opacity-100"
                     ref={element => center.current[index] = element!}
-                    onMouseEnter={() => marquees.current[index]?.pause()}
-                    onMouseLeave={() => marquees.current[index]?.play()}
+                    onMouseEnter={() => {
+                      marquees.current[index]?.pause()
+                      cursor.events.onMouseEnter()
+                    }}
+                    onMouseLeave={() => {
+                      marquees.current[index]?.play()
+                      cursor.events.onMouseLeave()
+                    }}
                   >
                     {[...Array(10)].map((_, index) => (
                       <Heading
@@ -147,6 +162,7 @@ const Header = ({ open, links, rights, place, phone, email, children, setOpen }:
             <a
               className="block overflow-hidden"
               href={`tel:${phone}`}
+              {...cursor.events}
             >
               <span
                 ref={element => bottom.current[1] = element!}
@@ -158,6 +174,7 @@ const Header = ({ open, links, rights, place, phone, email, children, setOpen }:
             <a
               className="overflow-hidden"
               href={`mailto:${email}`}
+              {...cursor.events}
             >
               <span
                 ref={element => bottom.current[2] = element!}
