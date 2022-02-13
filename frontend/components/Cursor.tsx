@@ -1,6 +1,6 @@
 import { gsap } from 'gsap'
 import useGesture from 'hooks/useGesture'
-import { useEffect, useRef } from 'react'
+import { memo, useEffect, useRef } from 'react'
 import lerp from 'utilities/lerp'
 
 type Props = {
@@ -70,4 +70,4 @@ const Cursor = ({ className, speed = 1, scale = 1 }: Props) => {
   )
 }
 
-export default Cursor
+export default memo(Cursor)
