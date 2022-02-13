@@ -13,7 +13,10 @@ module.exports = {
         }
       ]
     })
-
     return config
+  },
+  images: {
+    domains: ['res.cloudinary.com'],
+    formats: ['image/avif', 'image/webp']
   }
 }
