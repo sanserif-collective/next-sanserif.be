@@ -38,7 +38,7 @@ const Header = ({ open, links, rights, place, phone, email, children, setOpen }:
     )
   }
 
-  const hideMenu = () => { reveal.current?.reverse().add(setBlack, 1.5) }
+  const hideMenu = () => { reveal.current?.reverse().add(setBlack, 1) }
 
   const onPageChange = () => {
     setOpen(false)
