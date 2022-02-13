@@ -81,6 +81,7 @@ const Header = ({ open, links, rights, place, phone, email, children, setOpen }:
     return () => {
       reveal.current?.kill()
       marquees.current.forEach(marquee => marquee.kill())
+      router.events.off('routeChangeComplete', onPageChange)
     }
   }, [])
 
@@ -116,7 +117,10 @@ const Header = ({ open, links, rights, place, phone, email, children, setOpen }:
                     {[...Array(10)].map((_, index) => (
                       <Heading
                         key={index}
-                        className="!uppercase flex items-center pl-5 after:h-4 after:w-4 after:bg-white after:block after:ml-5 after:rounded-full"
+                        className={clsx(
+                          '!uppercase flex items-center pl-5',
+                          'after:h-4 after:w-4 after:bg-white after:block after:ml-5 after:rounded-full'
+                        )}
                       >
                         {label}
                       </Heading>
