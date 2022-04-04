@@ -1,0 +1,15 @@
+{
+  "name": "Preview",
+  "version": "1.0.0",
+  "description": "Plugin to preview the content.",
+  "strapi": {
+    "name": "Preview",
+    "description": "Plugin to preview the content.",
+    "kind": "plugin"
+  },
+  "engines": {
+    "node": ">=12.x. <=16.x.x",
+    "npm": ">=6.0.0"
+  },
+  "license": "MIT"
+}

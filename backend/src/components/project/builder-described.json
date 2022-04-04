@@ -6,7 +6,7 @@
   },
   "options": {},
   "attributes": {
-    "image": {
+    "first": {
       "type": "media",
       "multiple": false,
       "required": true,

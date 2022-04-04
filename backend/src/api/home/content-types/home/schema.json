@@ -9,7 +9,9 @@
   "options": {
     "draftAndPublish": false
   },
-  "pluginOptions": {},
+  "pluginOptions": {
+    "previewable": true
+  },
   "attributes": {
     "header": {
       "type": "component",
@@ -21,7 +23,7 @@
       "type": "dynamiczone",
       "components": [
         "home.builder-center",
-        "home.builder-two-top-one-bottom",
+        "home.builder-one-top-one-bottom",
         "home.builder-one-top-two-bottom"
       ]
     },

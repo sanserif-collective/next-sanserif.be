@@ -9,7 +9,9 @@
   "options": {
     "draftAndPublish": false
   },
-  "pluginOptions": {},
+  "pluginOptions": {
+    "previewable": true
+  },
   "attributes": {
     "header": {
       "type": "component",

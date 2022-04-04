@@ -1,6 +1,6 @@
 import { ScrollEvent, useASScroll } from 'features/asscroll'
 import { gsap } from 'gsap'
-import { useEffect, useRef } from 'react'
+import { useCallback } from 'react'
 import lerp from 'utilities/lerp'
 
 const Scrollbar = () => {
@@ -14,11 +14,10 @@ const Scrollbar = () => {
     { maxScroll }
   ) => progress.x = currentPos / maxScroll
 
-  const scrollbar = useRef<HTMLDivElement>(null)
   const { scroll } = useASScroll({ onScroll: updateProgress })
 
-  useEffect(() => {
-    const scaleXSet = gsap.quickSetter(scrollbar.current, 'scaleX')
+  const setScrollbar = useCallback((scrollbar: HTMLDivElement) => {
+    const scaleXSet = gsap.quickSetter(scrollbar, 'scaleX')
     const scaleBar = () => scaleXSet(scale.x += lerp(progress.x, scale.x, speed))
     gsap.ticker.add(scaleBar)
     return () => gsap.ticker.remove(scaleBar)
@@ -26,10 +25,9 @@ const Scrollbar = () => {
 
   return (
     <div
-      ref={scrollbar}
+      ref={setScrollbar}
       className="fixed inset-x-0 bottom-0 z-10 h-2 origin-left bg-black"
-    >
-    </div>
+    />
   )
 }
 

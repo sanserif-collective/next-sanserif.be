@@ -1,6 +1,6 @@
 import ASScroll from '@ashthornton/asscroll'
 
-export default class CustomASScroll extends ASScroll {
+class CustomASScroll extends ASScroll {
   constructor(parameters?: {
     containerElement?: string | HTMLElement;
     scrollElements?: string | HTMLElement | NodeList;
@@ -18,11 +18,15 @@ export default class CustomASScroll extends ASScroll {
     blockScrollClass?: string;
   }) {
     super(parameters)
+
+    this.speed = 0
+    this.lastPos = 0
+    this.lastTime = Date.now()
   }
 
-  speed = 0
-  lastPos = 0
-  lastTime = Date.now()
+  speed: number
+  lastPos: number
+  lastTime: number
 
   getSpeed() {
     const { controller: { currentPos }, lastTime, lastPos } = this
@@ -30,12 +34,12 @@ export default class CustomASScroll extends ASScroll {
 
     const delayInMs = currentTime - lastTime
     const offsetPos = currentPos - lastPos
-    const speedInpxPerMs = offsetPos / delayInMs
+    const speedInPxPerMs = offsetPos / delayInMs
 
     this.lastTime = currentTime
     this.lastPos = currentPos
 
-    return speedInpxPerMs
+    return speedInPxPerMs
   }
 
   update = () => {
@@ -43,3 +47,5 @@ export default class CustomASScroll extends ASScroll {
     this.events.onRaf()
   }
 }
+
+export default CustomASScroll

@@ -15,14 +15,16 @@
     "jsx": "preserve",
     "incremental": true,
     "baseUrl": ".",
-    "paths": {
-      "app/components/*": ["./components/*"],
-      "app/features/*": ["./features/*"],
-      "app/hooks/*": ["./hooks/*"],
+    "paths": {
+      "components/*": ["./components/*"],
+      "features/*": ["./features/*"],
+      "hooks/*": ["./hooks/*"],
+      "types/*": ["./types/*"],
+      "queries/*": ["./queries/*"],
       "public/*": ["./public/*"],
       "styles/*": ["./styles/*"],
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "graphql-client.ts"],
   "exclude": ["node_modules"]
 }

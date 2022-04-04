@@ -3,6 +3,7 @@
 @tailwind utilities;
 
 @layer base {
+
   @font-face {
     font-family: 'Inter Variable';
     src: url('../public/fonts/inter-variable.ttf') format('truetype-variations');
@@ -15,14 +16,24 @@
 
   body {
     @apply bg-gray;
-    @apply overflow-hidden;
+    @apply !overflow-hidden;
     @apply font-sans text-base font-medium text-black uppercase;
     text-rendering: optimizeLegibility;
-    cursor: none;
+  }
+
+  body,
+  a,
+  button {
+    @apply cursor-none md:cursor-auto;
+  }
+
+  a {
+    @apply inline-block;
   }
 }
 
 @layer utilities {
+
   .font-thin {
       font-variation-settings: 'wght' 100;
   }
@@ -59,7 +70,11 @@
       font-variation-settings: 'wght' 900;
   }
 
-  .writing-rl{
+  .writing-rl {
     writing-mode: vertical-rl;
+  }
+
+  .writing-tb {
+    writing-mode: horizontal-tb;
   }
 }

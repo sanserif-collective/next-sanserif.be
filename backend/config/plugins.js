@@ -14,5 +14,9 @@ module.exports = ({ env }) => ({
         delete: {}
       }
     }
-  }
+  },
+  preview: {
+    enabled: true,
+    resolve: './src/plugins/preview'
+  },
 })

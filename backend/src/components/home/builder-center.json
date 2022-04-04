@@ -6,7 +6,7 @@
   },
   "options": {},
   "attributes": {
-    "project": {
+    "first": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::project.project"

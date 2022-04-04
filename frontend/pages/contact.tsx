@@ -16,11 +16,10 @@ export const getStaticProps: GetStaticProps<Omit<Props, 'global'>> = async () =>
 }
 
 const Contact = ({ header, global: { contact } }: Props) => {
-
   return (
     <Layout className="flex flex-col items-center justify-between w-screen before:h-px">
       <p>{header.description}</p>
-      <div className="flex justify-between w-full">
+      <div className="flex items-end justify-between w-full">
         <div className="flex flex-col">
           <Heading
             as="h1"

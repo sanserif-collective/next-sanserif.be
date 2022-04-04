@@ -30,8 +30,7 @@
     "link": {
       "type": "component",
       "repeatable": false,
-      "component": "shared.link",
-      "required": true
+      "component": "shared.link"
     }
   }
 }
